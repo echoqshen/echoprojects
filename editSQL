@@ -6,7 +6,6 @@ select * from ph_employeedb.dept_manager;
 select * from ph_employeedb.titles;
 select * from ph_employeedb.dept_emp;
 
-
 drop table ph_employeedb.titles;
 
 CREATE TABLE PH_EmployeeDB.titles (
@@ -149,7 +148,31 @@ SELECT * from retirement_info;
 SELECT * from departments;
 SELECT * from dept_info;
 
-SELECT ri.emp_no,
+select count(*) from dept_emp where dept_no = 'd007';
+
+select emp_no as employee_number, first_name, last_name, 'sales' as department_name from retirement_info where emp_no in (select emp_no from dept_emp where dept_no = 'd007') limit 5;
+
+select emp_no as employee_number, first_name, last_name, 'sales' as department_name
+from retirement_info a join dept_emp b on a.emp_no = b.emp_no limit 5;
+
+--a Tailored List: limit to sales dept
+select 
+ri.emp_no,
 ri.first_name,
 ri.last_name,
+di.dept_name
+from retirement_info as ri
+inner join dept_info as di
+on (ri.emp_no = di.emp_no) where dept_name = 'Sales';
+
+--Tailored List: sales & development depts
+select 
+ri.emp_no,
+ri.first_name,
+ri.last_name,
+di.dept_name
+from retirement_info as ri
+inner join dept_info as di
+on (ri.emp_no = di.emp_no) where dept_name in ('Sales', 'Development'); 
+
 
